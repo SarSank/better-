@@ -16,8 +16,9 @@ import LoanPreferences from './pages/LoanPreferences';
 import LoanTypes from './pages/LoanTypes';
 import StudentLoan from './pages/StudentLoan';
 import PersonalLoan from './pages/PersonalLoan';
+import './App.css';
 
-function App() {
+const App: React.FC = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(Boolean(localStorage.getItem('token')));
 
     useEffect(() => {
@@ -30,19 +31,18 @@ function App() {
     }, []);
 
     return (
-        <Router>
-            <div className="min-h-screen bg-gray-50">
+        <Router future={{ 
+            v7_startTransition: true,
+            v7_relativeSplatPath: true 
+        }}>
+            <div className="App">
                 <Navbar />
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route 
-                        path="/compare" 
-                        element={
-                            isAuthenticated ? 
-                                <Compare /> : 
-                                <CompareGuest />
-                        } 
-                    />
+                    <Route path="/loans/*" element={<LoanTypes />} />
+                    <Route path="/compare" element={
+                        isAuthenticated ? <Compare /> : <CompareGuest />
+                    } />
                     <Route path="/creditscore" element={<CreditScore />} />
                     <Route path="/loan-preferences" element={
                         <LoanPreferences 
@@ -81,6 +81,6 @@ function App() {
             </div>
         </Router>
     );
-}
+};
 
 export default App;
